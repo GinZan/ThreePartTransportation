@@ -1,0 +1,18 @@
+.header{background:url(../img/bg.png);background-repeat: repeat-x;}
+.head-ct{width: 1000px;height: 66px;margin: 0 auto;position: relative;z-index: 3000}
+.logo{background-image: url(../img/logo.png); float: left;text-indent: -1000px;width: 411px;height: 50px}
+.login-info{float: right;margin-right: 5px;margin-bottom: 2px}
+.sear-box{width:1000px;height: 80px;margin: 0 auto;position: relative;top: 10px;z-index: 100;border: 2px solid gray; border-radius: 4px;background-color: #FFFFCC;}
+.mid-container{position: absolute;top:25%;left: 10%}
+.colorOrange{color: #fb7403}
+.dfc{float: left;margin-right: 5px;width: 60px;background: url(../img/line_sear.png) right center no-repeat;}
+.s-info{float: left; margin-right: 15px;z-index: 300}
+.s-info ul{float: left}
+.s-info li{width: 140px;float: left;}
+.inp-w{float: left;position: relative;height: 30px;}
+.inp-w input{width: 60px;height: 30px}
+.label1 label {float: left;display: block;width: 70px;font-size: 23px}
+.label1 label div {float: left;display: block;width: 50px}
+.confirm{margin-left: 30px}
+.confirm input{ font-size: 30px ;}
+.resultTable{position: relative;top: 10px;width: 1000px}

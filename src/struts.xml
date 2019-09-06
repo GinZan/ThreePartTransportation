@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+<constant name="struts.i18n.encoding" value="UTF-8" />
+<constant name="struts.devMode" value="true" />
+
+
+  <package name="tripjson" extends="json-default">
+  <global-results>
+  	<result name="success" type="redirect">/Business/query_trip.jsp</result>
+  	<result name="error"  type="redirect">/Tips/exception.jsp</result>
+  </global-results>
+  
+    <action name="querySpecificTrip" class="Action.AjaxAction">
+	    <result type="json">
+	    	<param name="root">triplist</param>
+	    	<param name="noCache">true</param>
+	    </result>
+    </action>
+    <action name="ajaxQueryAlltrip" class="Action.TripAction" method="ajaxQueryAlltrip">
+	    <!-- Result fragment -->
+		<result type="json">
+		  <param name="includeProperties">
+		  rest_poll,
+		  ^triplist\[\d+\]\.tripId
+		  </param>
+		</result>
+    </action>
+  </package>
+ <package name="order" extends="struts-default"  namespace="/order">
+  <interceptors>
+  	<interceptor name="loginCheck" class="interceptor.MyCommonLoginInterceptor"/>
+  	<interceptor name="adminCheck" class="AdminAccessControlInterceptor"/>
+  	<interceptor-stack name="loginCheckStack">
+  		<interceptor-ref name="loginCheck"></interceptor-ref>
+  		<interceptor-ref name="defaultStack"></interceptor-ref>
+  	</interceptor-stack>
+  </interceptors>
+ 
+  <!-- order包下"/order"的默认拦截器定义 -->
+  <default-interceptor-ref name="loginCheck"></default-interceptor-ref>
+   <!-- 全局result设置 -->
+  <global-results>
+  	<result name="tologin">/login.jsp</result>
+  </global-results>
+  
+	<action name="makeAnOrder" class="Action.OrderAction" >
+		<result name="success" type="redirect">/Tips/makeOrderSuccess.jsp</result>
+	</action>
+	<action name="myOrders" class="Action.OrderAction" method="getMyOrdersDetails">
+		<result name="success">/Business/myOrder.jsp</result>
+	</action>
+	<action name="delOrder" class="Action.OrderAction"  method="delOrder">
+		<result name="success"  type="redirectAction">../order/myOrders</result>
+	</action>
+	<action name="payValidateInfo" class="Action.OrderAction" method="payValidateInfo">
+	 	<result name="success" type="redirectAction">myOrders</result>
+		<result name="error" type="redirectAction">myOrders</result>
+	</action>
+  </package>
+  <package name="validate" extends="struts-default" namespace="/validate">
+  	<action name="loginValidate" class="Action.UserAction"  method="loginValidate">
+  		<result name="success" type="redirect">/Business/query_trip.jsp</result>
+  		<result name="error"  type="redirect">/login.jsp</result>
+  	</action>
+  </package>
+  
+<!-- 管理员相关 -->
+  <package name="adminOrder" extends="struts-default"  namespace="/admin">
+  <interceptors>
+  	<interceptor name="loginCheck" class="interceptor.MyCommonLoginInterceptor"/>
+  	<interceptor name="adminCheck" class="interceptor.AdminAccessControlInterceptor"/>
+  	<interceptor-stack name="loginAndAdminCheckStack">
+  		<interceptor-ref name="loginCheck"/>
+  		<interceptor-ref name="adminCheck"/>
+  		<interceptor-ref name="defaultStack"/>
+  	</interceptor-stack>
+  </interceptors>
+  <!-- adminOrder包下 "/order"的默认拦截器定义 -->
+  <default-action-ref name="loginAndAdminCheckStack"></default-action-ref>
+	  <action name="validateOrderPay" class="adminAction.AdminOrderAction" method="validateOrderPay">
+	  	<result name="success" >/Company/ManageOrders.jsp</result>
+	  	<result name="error" >/Company/ManageOrders.jsp</result>
+	  </action>	
+	  <action name="undoOrderPay" class="adminAction.AdminOrderAction" method="undoOrderPay">
+	  	<result name="success">/Company/manageOrders.jsp</result>
+	  	<result name="error">/Company/manageOrders.jsp</result>
+	  </action>
+	  
+  </package>
+  
+  <package name="adminTrip" extends="struts-default"  namespace="/admin">
+ <interceptors>
+  	<interceptor name="loginCheck" class="interceptor.MyCommonLoginInterceptor"/>
+  	<interceptor name="adminCheck" class="interceptor.AdminAccessControlInterceptor"/>
+  	<interceptor-stack name="loginAndAdminCheckStack">
+  		<interceptor-ref name="loginCheck"/>
+  		<interceptor-ref name="adminCheck"/>
+  		<interceptor-ref name="defaultStack"/>
+  	</interceptor-stack>
+  </interceptors>
+  	 <action name="myManageTrip" class="adminAction.AdminOrderAction" method="getAdminOrdersDetails">
+	  	<result name="success">/Company/ManageOrders.jsp</result>
+	  </action>
+	  <action name="addTrip" class="adminAction.AdminOrderAction" method="addTrip">
+	  	<result name="success">/Company/manageTrip.jsp</result>
+	  	<result name="error">/Company/manageTrip.jsp</result>
+	  </action>
+  </package>
+</struts>
